@@ -1,0 +1,123 @@
+Roman Numerial system consists of 7 symbols, each standing for a value:
+
+Numeral	Value
+I		1
+V		5
+X		10
+L		50
+C		100
+D		500
+M		1000
+
+
+Composite numerals - pairs of numerals that follow a subtractive rule.
+
+The subtractive allows a numeral of a lower value to be placed before one of a higher value 
+to indicate that the lesser should be subtracted from the greater. 
+ 
+Thus IV means 5 - 1 = 4, and XC = 100 - 10 = 90 etc.
+
+Numeral	Value
+IV		4
+IX 		9
+XL		40
+XC 		90  
+CD  	400 
+CM		900
+
+online Roman Numerial converter
+
+https://www.rapidtables.com/convert/number/roman-numerals-converter.html
+
+
+pseudo code
+
+romanNumerialToDecimal(string)
+
+Convert each roman numeral in the input string to a decimal integer and add them together,
+unless a lower digit preceeds a higher one, in which case subtract the
+lower digit from the running total. 
+
+1. Split the string into characters
+2. Convert each character into the value it represents
+3. Start from the right - the lowest value numeral
+4. Keep a running total, and a record of the maximum numeral encountered so far
+5. Take characters one by one:
+	If character is greater than the maximum, add it to the running total and update the maximum
+	If character is less than the maximum, subtract it from the running total
+	
+Example:
+MMLI =
+M+M+L+I =
+1000+1000+50+1 =
+2051	
+
+decimalToRomanNumerial(number)
+
+Iterate through the decimal digits we have roman numeral mappings for, biggest first,
+divide each into the decimal number, if result > 0, add that number of roman digits to the output
+repeat the process with the remainder and the rest of the roman digits
+
+1. Start with the complete list of numeral values: { 1000, 900, 500, 400, ... 50, 40, 10, 9, 5, 4, 1}. 
+2. Pop the largest value from the list.
+3. Divide the value into the input_number, storing the quotient and remainder
+4. If the quotient is greater then 0
+	loop 1..quotient
+		append roman numerial symbol for the value into result string.
+5. set input_number = remainder
+6. repeat steps 1..5 until remainder = 0
+
+Example:
+2009 =
+1000+1000+9 =
+M+M+IX =
+MMIX
+		
+Testing
+
+describe("romanNumerialToDecimal invalid input tests", () => {
+    test('romanNumerialToDecimal error input', () => {
+        expect(() => romanNumerialToDecimal()).toThrow(Error);
+        expect(() => romanNumerialToDecimal(null)).toThrow(Error);
+        expect(romanNumerialToDecimal('')).toBe(0);
+    });    
+
+    test('romanNumerialToDecimal basic data tests', () => {
+        expect(romanNumerialToDecimal('I')).toBe(1);
+        expect(romanNumerialToDecimal('Ii')).toBe(2);
+        expect(romanNumerialToDecimal('IV')).toBe(4);
+        expect(romanNumerialToDecimal('v')).toBe(5);
+        expect(romanNumerialToDecimal('VI')).toBe(6);
+        expect(romanNumerialToDecimal('IX')).toBe(9);
+        expect(romanNumerialToDecimal('X')).toBe(10);
+    });
+});
+
+describe("decimalToRomanNumerial invalid input tests", () => {
+    test('decimalToRomanNumerial error input', () => {
+        expect(() => decimalToRomanNumerial()).toThrow(Error);
+        expect(() => decimalToRomanNumerial(null)).toThrow(Error);
+        expect(decimalToRomanNumerial('IV')).toBe('');
+        expect(decimalToRomanNumerial(-1)).toBe('');
+        expect(decimalToRomanNumerial(0)).toBe('');
+    });
+
+    test('decimalToRomanNumerial basic data tests', () => {          
+        expect(decimalToRomanNumerial(1)).toBe('I');
+        expect(decimalToRomanNumerial(2)).toBe('II');
+        expect(decimalToRomanNumerial(4)).toBe('IV');
+        expect(decimalToRomanNumerial(5)).toBe('V');
+        expect(decimalToRomanNumerial(6)).toBe('VI');
+        expect(decimalToRomanNumerial(9)).toBe('IX');
+        expect(decimalToRomanNumerial(10)).toBe('X');
+    });
+});
+
+
+Test every numerial upto 3000 loading a file with all test Cases
+
+Edge Cases
+
+Fractional number input
+Invalid numerial characters in input string
+
